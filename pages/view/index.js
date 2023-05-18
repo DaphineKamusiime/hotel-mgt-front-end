@@ -3,24 +3,9 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { render } from "react-dom";
  
-const Home = ({  }) => {
+const Home = ({ rooms }) => {
  const router = useRouter();
- const [rooms, setRooms] = useState();
- async function fetchData() {
-  try {
-    const res = await axios.get("http://localhost:1337/api/rooms");
-   setRooms(res.data)
-   console.log(res.data)
-  } catch (error) {
-    
-    return { error };
-  }
-}
- useEffect(async() => {
-  
-  fetchData();
-  
-}, [rooms]);
+console.log("test", rooms)
 
  return (
    <>
@@ -136,13 +121,14 @@ const Home = ({  }) => {
  );
 };
  
-Home.getInitialProps = async (ctx) => {
- try {
-   const res = await axios.get("http://localhost:1337/api/rooms");
+export async function getStaticProps() {
+
+   const res = await axios.get("http://localhost:3000/rooms");
    const rooms = res.data;
-   return { rooms };
- } catch (error) {
-   return { error };
+ return {
+  props: {
+    rooms
+  }
  }
 };
  
